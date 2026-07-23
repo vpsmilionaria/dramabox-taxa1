@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, Download, Smartphone, Apple, ShieldCheck, Sparkles, PlayCircle, Lock, AlertTriangle, Loader2, ShieldAlert } from "lucide-react";
+import { CheckCircle2, ShieldCheck, PlayCircle, Lock, AlertTriangle, Loader2, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import logoAsset from "@/assets/dramabox-logo.png.asset.json";
 import iconAsset from "@/assets/dramabox-icon.png.asset.json";
