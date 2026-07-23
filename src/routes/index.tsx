@@ -141,7 +141,7 @@ function ThankYou() {
 
         {/* Selos */}
         <div className="flex justify-center opacity-70">
-          <img src={garantiasAsset.url} alt="Compra segura, satisfação garantida, privacidade protegida" className="max-w-sm w-full" />
+          <img src={garantiasAsset.url} alt="Compra segura, satisfação garantida, privacidade protegida" className="max-w-[120px] w-full" />
         </div>
       </main>
 
