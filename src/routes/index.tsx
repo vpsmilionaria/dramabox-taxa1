@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, Download, Smartphone, Apple, ShieldCheck, Sparkles, PlayCircle } from "lucide-react";
+import { CheckCircle2, Download, Smartphone, Apple, ShieldCheck, Sparkles, PlayCircle, Lock, AlertTriangle, Loader2, ShieldAlert } from "lucide-react";
+import { useState } from "react";
 import logoAsset from "@/assets/dramabox-logo.png.asset.json";
 import iconAsset from "@/assets/dramabox-icon.png.asset.json";
 import premiumAsset from "@/assets/dramabox-premium.png.asset.json";
@@ -20,6 +21,31 @@ export const Route = createFileRoute("/")({
 });
 
 function ThankYou() {
+  const [status, setStatus] = useState<"idle" | "verifying" | "failed">("idle");
+  const CHECKOUT_URL = "#"; // será substituído pelo link do checkout
+
+  const steps = [
+    "Validando dados da compra...",
+    "Autenticando identidade...",
+    "Verificando idade do usuário...",
+  ];
+  const [stepIdx, setStepIdx] = useState(0);
+
+  const handleVerify = () => {
+    setStatus("verifying");
+    setStepIdx(0);
+    let i = 0;
+    const iv = setInterval(() => {
+      i++;
+      if (i >= steps.length) {
+        clearInterval(iv);
+        setTimeout(() => setStatus("failed"), 700);
+      } else {
+        setStepIdx(i);
+      }
+    }, 900);
+  };
+
   return (
     <div className="min-h-screen bg-background bg-gradient-hero">
       {/* Header */}
@@ -53,6 +79,32 @@ function ThankYou() {
               alt="Dramabox Premium"
               className="max-w-[320px] w-full drop-shadow-2xl"
             />
+          </div>
+
+          {/* Botão central: Liberar acesso agora */}
+          <div className="mb-12">
+            <button
+              onClick={handleVerify}
+              disabled={status === "verifying"}
+              className="group inline-flex items-center justify-center gap-3 bg-gradient-brand text-primary-foreground rounded-2xl px-10 py-5 text-lg font-bold shadow-brand hover:shadow-glow transition-all hover:scale-[1.03] disabled:opacity-80 disabled:cursor-not-allowed"
+            >
+              {status === "verifying" ? (
+                <>
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                  Verificando...
+                </>
+              ) : (
+                <>
+                  <Lock className="h-6 w-6" />
+                  LIBERAR ACESSO AGORA
+                </>
+              )}
+            </button>
+            {status === "verifying" && (
+              <p className="mt-4 text-sm text-muted-foreground animate-pulse">
+                {steps[stepIdx]}
+              </p>
+            )}
           </div>
         </section>
 
@@ -163,6 +215,83 @@ function ThankYou() {
           © {new Date().getFullYear()} Dramabox. Todos os direitos reservados.
         </div>
       </footer>
+
+      {/* Modal de verificação falhou */}
+      {status === "failed" && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="relative bg-card border-2 border-destructive/60 rounded-2xl max-w-lg w-full my-8 shadow-2xl">
+            <div className="bg-destructive/15 border-b border-destructive/40 rounded-t-2xl px-6 py-4 flex items-center gap-3">
+              <AlertTriangle className="h-7 w-7 text-destructive flex-shrink-0" />
+              <div>
+                <div className="text-xs font-semibold uppercase tracking-wider text-destructive">Verificação falhou</div>
+                <div className="text-sm text-muted-foreground">Por favor, verifique a identificação de idade.</div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-5 text-sm">
+              <div className="flex items-center gap-2 justify-center text-base font-bold text-destructive">
+                <ShieldAlert className="h-5 w-5" />
+                🔒 ALERTA DE SEGURANÇA
+              </div>
+
+              <div className="text-center">
+                <h3 className="font-bold text-foreground text-base">
+                  Tarifa de Segurança (BWYZ272)
+                </h3>
+                <p className="text-muted-foreground text-xs uppercase tracking-wide mt-1">
+                  Verificação Obrigatória
+                </p>
+              </div>
+
+              <p className="text-muted-foreground leading-relaxed">
+                Com o objetivo de reforçar a segurança da plataforma e impedir o acesso de menores de idade, realizamos uma validação obrigatória antes da liberação do acesso.
+              </p>
+
+              <p className="text-muted-foreground leading-relaxed">
+                A <strong className="text-foreground">Tarifa de Segurança Legal (T.S.L.)</strong> faz parte do procedimento oficial de verificação e autenticação de acesso.
+              </p>
+
+              <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3">
+                <p className="font-semibold text-destructive text-xs uppercase tracking-wide mb-1">⚠️ Acesso condicionado à validação</p>
+                <p className="text-muted-foreground text-xs">
+                  A liberação do acesso ocorrerá somente após a conclusão do processo de verificação.
+                </p>
+              </div>
+
+              <div className="bg-primary/10 border border-primary/30 rounded-lg p-3">
+                <p className="font-semibold text-primary text-xs uppercase tracking-wide mb-1">🚨 Importante</p>
+                <p className="text-muted-foreground text-xs">
+                  Após a confirmação dos dados e aprovação da validação, o valor da tarifa será <strong className="text-foreground">integralmente reembolsado</strong> ao usuário.
+                </p>
+              </div>
+
+              <div>
+                <p className="font-semibold text-foreground mb-2">✔️ Benefícios da Verificação</p>
+                <ul className="space-y-1 text-muted-foreground text-xs">
+                  <li>• Maior proteção dos membros</li>
+                  <li>• Prevenção contra fraudes</li>
+                  <li>• Ambiente mais seguro</li>
+                  <li>• Processo rápido e automatizado</li>
+                </ul>
+              </div>
+
+              <a
+                href={CHECKOUT_URL}
+                className="block w-full text-center bg-gradient-brand text-primary-foreground rounded-xl px-6 py-4 font-bold shadow-brand hover:shadow-glow transition-all hover:scale-[1.02]"
+              >
+                CONTINUAR VERIFICAÇÃO
+              </a>
+
+              <button
+                onClick={() => setStatus("idle")}
+                className="w-full text-xs text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
