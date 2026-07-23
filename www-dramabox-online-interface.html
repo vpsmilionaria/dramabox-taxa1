@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acesso Bot para DramaBox</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050505;--header:#111111;--bubble:#1d1d1d;--bubble-self:#2b5278;--text:#ffffff;--text-dim:#b3b3b3;--accent:#e50914;--accent-bright:#ff4d57;--button:#3a3a3a;--button-hover:#4b4b4b;--separator:#2a2a2a}
+html,body{height:100%}
+body{background:linear-gradient(180deg,#0a0a0a 0%, #060606 60%, #020202 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden}
+.app{height:100vh;display:flex;flex-direction:column;max-width:480px;margin:0 auto;background:linear-gradient(180deg,#0d0d0d 0%, #080808 100%);position:relative}
+.app::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><circle cx='30' cy='30' r='2' fill='%23a40b10'/><circle cx='90' cy='60' r='1.5' fill='%23a40b10'/><circle cx='60' cy='90' r='2' fill='%23a40b10'/><circle cx='15' cy='75' r='1' fill='%23a40b10'/><circle cx='105' cy='15' r='1.5' fill='%23a40b10'/></svg>");opacity:0.25;pointer-events:none}
+.header{position:relative;z-index:2;display:flex;align-items:center;gap:12px;padding:8px 12px;background:linear-gradient(180deg,#191919,#111111);border-bottom:1px solid var(--separator);flex-shrink:0}
+.back{color:var(--accent-bright);font-size:24px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:50%;transition:background 0.15s ease}
+.back:hover{background:rgba(229,9,20,0.14)}
+.avatar{width:40px;height:40px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#e50914,#7d0208);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:2px solid rgba(255,255,255,0.12)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.peer{flex:1;min-width:0}
+.peer-name{font-size:15px;font-weight:700;color:var(--text);line-height:1.2;display:flex;align-items:center;gap:5px}
+.peer-status{font-size:12px;color:#ffffff;line-height:1.3;display:flex;align-items:center;gap:4px}
+.peer-status::before{content:'';width:6px;height:6px;background:#22c55e;border-radius:50%}
+.icon-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--accent-bright);cursor:pointer;border-radius:50%;font-size:18px}
+.icon-btn:hover{background:rgba(229,9,20,0.14)}
+.chat{position:relative;z-index:2;flex:1;overflow-y:auto;padding:16px 12px;display:flex;flex-direction:column;gap:6px;transition:opacity 0.25s ease, transform 0.25s ease}
+.day-divider{align-self:center;background:rgba(27,27,27,0.92);color:var(--text);font-size:11px;font-weight:600;padding:4px 10px;border-radius:12px;margin:8px 0;backdrop-filter:blur(4px)}
+.bubble{max-width:80%;padding:8px 12px 6px;border-radius:14px;font-size:15px;line-height:1.4;color:var(--text);position:relative;animation:slideIn 0.3s cubic-bezier(0.22,1,0.36,1) both}
+.verification-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity 0.3s ease;z-index:3;background:linear-gradient(180deg,rgba(0,0,0,0.66),rgba(0,0,0,0.92))}
+.verification-card{width:min(100%, 320px);background:rgba(18,18,18,0.98);border:1px solid rgba(255,255,255,0.08);border-radius:22px;padding:20px;box-shadow:0 20px 54px rgba(0,0,0,0.5);text-align:center}
+.verification-card h2{font-size:22px;margin-bottom:8px}
+.verification-card p{font-size:13px;color:var(--text-dim);margin-bottom:16px;line-height:1.5}
+.verification-status{display:flex;flex-direction:column;gap:10px;align-items:flex-start;text-align:left}
+.verification-status .status-line{display:flex;align-items:center;gap:8px;color:#fff;font-size:14px}
+.verification-status .status-dot{width:8px;height:8px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 6px rgba(22,163,74,0.16)}
+.verification-status .status-line.is-active .status-dot{background:#facc15;box-shadow:0 0 0 6px rgba(250,204,21,0.14)}
+.verification-status .status-line.is-error .status-dot{background:#ef4444;box-shadow:0 0 0 6px rgba(239,68,68,0.15)}
+.verification-status .status-line.is-muted{color:var(--text-dim)}
+.app.is-verifying .chat{opacity:0.16}
+.app.is-verifying .composer,.app.is-verifying .footer{opacity:0.14}
+.app.is-verifying .verification-stage{opacity:1;pointer-events:auto}
+.bubble.in{align-self:flex-start;background:var(--bubble);border-bottom-left-radius:4px;animation-delay:0.1s}
+.bubble.in:not(:first-of-type){animation-delay:0.4s}
+.bubble.in:nth-of-type(3){animation-delay:0.7s}
+.bubble.alert{background:rgba(32,12,19,0.98);border-left:3px solid #F50061;color:#fff}
+.bubble.alert strong{display:block;margin-bottom:4px}
+.bubble.alert small{display:block;color:#ffb2c8;margin-top:4px}
+.bubble-time{font-size:11px;color:var(--text-dim);float:right;margin-left:8px;margin-top:6px;line-height:1}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.kbd-row{align-self:flex-start;display:flex;flex-direction:column;gap:4px;width:80%;max-width:280px;opacity:0;pointer-events:none;transition:opacity 0.25s ease, transform 0.25s ease;transform:translateY(6px)}
+.kbd-row.is-visible{opacity:1;pointer-events:auto;transform:translateY(0);animation:slideIn 0.3s cubic-bezier(0.22,1,0.36,1) both}
+.kbd-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;background:linear-gradient(180deg,#312455,#22183d);color:#f5efff;font-size:14px;font-weight:600;border-radius:10px;text-decoration:none;transition:transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;cursor:pointer;text-align:center;box-shadow:0 8px 18px rgba(92,61,171,0.2);border:0;font-family:inherit;width:100%}
+.kbd-btn:hover{background:linear-gradient(180deg,#453070,#2c214a);transform:translateY(-1px)}
+.kbd-btn-primary{background:#16a34a !important;color:#fff;font-weight:700;box-shadow:0 8px 18px rgba(22,163,74,0.28)}
+.kbd-btn-primary:hover{background:#22c55e !important}
+.kbd-btn.is-loading{opacity:0.98;pointer-events:none;background:linear-gradient(180deg,#1f7e3b,#18592a) !important;box-shadow:0 16px 28px rgba(22,163,74,0.35);transform:scale(1.01);animation:pulseLoading 1.15s ease-in-out infinite}
+.kbd-btn.is-loading .button-spinner{display:inline-flex;align-items:center;gap:10px}
+.kbd-btn.is-loading .button-spinner::before{content:'';width:12px;height:12px;border-radius:50%;border:2px solid rgba(255,255,255,0.32);border-top-color:#ffffff;animation:spin 0.9s linear infinite;flex-shrink:0}
+.kbd-btn.is-loading .button-text{letter-spacing:0.4px}
+.kbd-icon{font-size:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulseLoading{0%,100%{filter:brightness(1)}50%{filter:brightness(1.08)}}
+.footer{position:relative;z-index:2;padding:10px 12px 12px;background:linear-gradient(180deg,#0a0a0a,#050505);border-top:1px solid var(--separator);font-size:12px;color:var(--text-dim);text-align:center;letter-spacing:0.3px}
+.composer{position:relative;z-index:2;display:flex;align-items:center;gap:8px;padding:8px 12px 12px;background:linear-gradient(180deg,#171717,#111111);flex-shrink:0}
+.composer-input{flex:1;background:#242424;border-radius:18px;padding:10px 16px;color:var(--text-dim);font-size:14px}
+.composer-send{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#F50061,#F93532 55%,#F93532);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;cursor:pointer;transition:transform 0.15s ease, filter 0.15s ease;background-size:200% 200%;box-shadow:0 8px 18px rgba(245,0,97,0.32)}
+.composer-send:hover{background:linear-gradient(135deg,#ff2c7e,#ff4b4b 55%,#f93532);transform:translateY(-1px);filter:brightness(1.05)}
+@media (min-width:481px){body{background:#0f0f0f}.app{margin:20px auto;height:calc(100vh - 40px);max-height:780px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.6)}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="back">‹</div>
+    <div class="avatar"><img src="images/icon.png" alt="DramaBox icon"></div>
+    <div class="peer">
+      <div class="peer-name">DramaBox</div>
+      <div class="peer-status">online</div>
+    </div>
+    <div class="icon-btn">⋮</div>
+  </header>
+
+  <div class="chat">
+    <div class="day-divider">hoje</div>
+    <div class="kbd-row">
+      <button type="button" class="kbd-btn kbd-btn-primary button">
+        <span>RECEBER MEU ACESSO</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="verification-stage" aria-hidden="true">
+    <div class="verification-card">
+      <h2>Verificando...</h2>
+      <p>Validando acesso no sistema. Aguarde a confirmação.</p>
+      <div class="verification-status">
+        <div class="status-line is-active"><span class="status-dot"></span><span id="verifyStep1">Verificando no sistema...</span></div>
+        <div class="status-line is-muted"><span class="status-dot"></span><span id="verifyStep2">Verificando e-mail...</span></div>
+        <div class="status-line is-muted"><span class="status-dot"></span><span id="verifyStep3">Validando perfil...</span></div>
+        <div class="status-line is-muted"><span class="status-dot"></span><span id="verifyStep4">Confirmando acesso...</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="composer">
+    <div class="composer-input">Mensagem desativada — toque no botão acima</div>
+    <div class="composer-send">➤</div>
+  </div>
+  <div class="footer">DramaBox • Chat Seguro</div>
+</div>
+<script>
+(function() {
+  var u = new URLSearchParams(window.location.search);
+  var KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','utm_id','fbclid','ttclid','click_id','_fbp','gclid','xcod','sck','cv','salesCode'];
+  var captured = {};
+  KEYS.forEach(function(k){ var v = u.get(k); if (v) captured[k] = v; });
+  try {
+    var saved = JSON.parse(sessionStorage.getItem('shark_utms') || '{}');
+    Object.keys(captured).forEach(function(k){ saved[k] = captured[k]; });
+    sessionStorage.setItem('shark_utms', JSON.stringify(saved));
+    captured = saved;
+  } catch(e) {}
+  function buildLink(originalHref) {
+    var url = new URL(originalHref, location.origin);
+    Object.keys(captured).forEach(function(k){
+      if (!url.searchParams.has(k)) url.searchParams.set(k, captured[k]);
+    });
+    return url.toString();
+  }
+  function attach() {
+    var chat = document.querySelector('.chat');
+    var buttonRow = document.querySelector('.kbd-row');
+    var app = document.querySelector('.app');
+    var started = false;
+    var verifyStep1 = document.getElementById('verifyStep1');
+    var verifyStep2 = document.getElementById('verifyStep2');
+    var verifyStep3 = document.getElementById('verifyStep3');
+    var verifyStep4 = document.getElementById('verifyStep4');
+    function pushMessage(html, type, beforeElement) {
+      var el = document.createElement('div');
+      el.className = 'bubble in' + (type ? ' ' + type : '');
+      el.innerHTML = html + '<span class="bubble-time">agora</span>';
+      if (beforeElement && beforeElement.parentNode === chat) {
+        chat.insertBefore(el, beforeElement);
+      } else {
+        chat.appendChild(el);
+      }
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    var introMessages = [
+      'Olá! 👋 Parabéns o seu pagamento foi aprovado e seu acesso está pronto!',
+      'Confirme clicando abaixo para liberar a validação do seu perfil e continuar com segurança.',
+      'Toque no botão abaixo receber seu acesso👇'
+    ];
+
+    var introIndex = 0;
+    function playIntroSequence() {
+      if (introIndex >= introMessages.length) return;
+      pushMessage(introMessages[introIndex], null, buttonRow);
+      introIndex += 1;
+      if (introIndex < introMessages.length) {
+        setTimeout(playIntroSequence, 1500);
+      } else {
+        setTimeout(function(){
+          buttonRow.classList.add('is-visible');
+        }, 200);
+      }
+    }
+
+    setTimeout(playIntroSequence, 300);
+
+    document.querySelectorAll('.button, .cta, a[href*="/l/"], a[href*="/c/"], a[href*="/b/"]').forEach(function(btn){
+      btn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if (started) return;
+        started = true;
+        btn.classList.add('is-loading');
+        btn.setAttribute('aria-disabled', 'true');
+        btn.innerHTML = '<span class="button-spinner"><span class="button-text">VERIFICANDO...</span></span>';
+
+        var steps = [
+          { el: verifyStep1, label: 'Verificando no sistema...' },
+          { el: verifyStep2, label: 'Verificando e-mail...' },
+          { el: verifyStep3, label: 'Validando perfil...' },
+          { el: verifyStep4, label: 'Confirmando acesso...' }
+        ];
+
+        setTimeout(function() {
+          app.classList.add('is-verifying');
+          buttonRow.classList.remove('is-visible');
+
+          var current = 0;
+          function runStep() {
+            if (current >= steps.length) {
+              steps[steps.length - 1].el.parentNode.classList.add('is-error');
+              steps[steps.length - 1].el.textContent = 'Falha na validação do acesso';
+              return;
+            }
+
+            var step = steps[current];
+            step.el.textContent = step.label;
+            step.el.parentNode.classList.remove('is-muted');
+            step.el.parentNode.classList.add('is-active');
+
+            if (current > 0) {
+              steps[current - 1].el.parentNode.classList.remove('is-active');
+              steps[current - 1].el.parentNode.classList.add('is-muted');
+            }
+
+            current += 1;
+            setTimeout(runStep, 1300);
+          }
+
+          setTimeout(runStep, 1300);
+        }, 2500);
+      }, { once: false, capture: true });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attach);
+  } else {
+    attach();
+  }
+})();
+</script>
+</body>
+</html>
