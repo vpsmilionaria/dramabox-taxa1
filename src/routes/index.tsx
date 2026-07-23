@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, Download, Smartphone, Apple, ShieldCheck, Sparkles, PlayCircle, Lock, AlertTriangle, Loader2, ShieldAlert } from "lucide-react";
+import { CheckCircle2, ShieldCheck, PlayCircle, Lock, AlertTriangle, Loader2, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import logoAsset from "@/assets/dramabox-logo.png.asset.json";
 import iconAsset from "@/assets/dramabox-icon.png.asset.json";
@@ -108,71 +108,6 @@ function ThankYou() {
           </div>
         </section>
 
-        {/* Passo a passo */}
-        <section className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-brand mb-8">
-          <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-            <Sparkles className="h-6 w-6 text-primary" />
-            Como instalar em 3 passos
-          </h2>
-
-          <ol className="space-y-5">
-            {[
-              {
-                t: "Escolha sua loja",
-                d: "Clique no botão abaixo correspondente ao seu celular (Android ou iPhone).",
-              },
-              {
-                t: "Baixe o aplicativo",
-                d: "A loja oficial vai abrir. Toque em Instalar e aguarde o download terminar.",
-              },
-              {
-                t: "Faça login com o e-mail da compra",
-                d: "Abra o Dramabox e entre com o mesmo e-mail que você usou aqui. Seu Premium estará ativo.",
-              },
-            ].map((s, i) => (
-              <li key={i} className="flex gap-4">
-                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gradient-brand text-primary-foreground font-bold flex items-center justify-center shadow-glow">
-                  {i + 1}
-                </div>
-                <div>
-                  <h3 className="font-semibold text-lg">{s.t}</h3>
-                  <p className="text-muted-foreground text-sm mt-0.5">{s.d}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* Download buttons */}
-        <section className="grid sm:grid-cols-2 gap-4 mb-10">
-          <a
-            href="https://download2435.mediafire.com/mp4blh21oxag3O0KPKKe8JzYlR2MPBVSKO7b1T_U426uz-I6igPUPyIJJ5s7xljESi0_Q3YOu_b1YCS1P54mnwn2P2XmcI74PuGLCacPZM3Bbu6P6VwXKeiaDqojGyODDQLsFTpBu6g6MChqMrFL20FMOFOhnAVOnRZDYFCasfyfysSR/0faf7ic5cvb2439/DramaBox+Ilimitado.apk"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-center gap-3 bg-gradient-brand text-primary-foreground rounded-xl px-6 py-4 font-semibold shadow-brand hover:shadow-glow transition-all hover:scale-[1.02]"
-          >
-            <Smartphone className="h-6 w-6" />
-            <div className="text-left">
-              <div className="text-[10px] opacity-90 uppercase tracking-wide">Baixar APK para</div>
-              <div className="text-base leading-tight">Android</div>
-            </div>
-            <Download className="h-5 w-5 ml-auto opacity-80 group-hover:translate-y-0.5 transition-transform" />
-          </a>
-
-          <a
-            href="https://serverflow.dad/c/dramabox-premium-197a"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center justify-center gap-3 bg-card border border-border rounded-xl px-6 py-4 font-semibold hover:border-primary/60 hover:bg-secondary transition-all hover:scale-[1.02]"
-          >
-            <Apple className="h-6 w-6" />
-            <div className="text-left">
-              <div className="text-[10px] opacity-90 uppercase tracking-wide">Baixar para</div>
-              <div className="text-base leading-tight">iPhone (iOS)</div>
-            </div>
-            <Download className="h-5 w-5 ml-auto opacity-80 group-hover:translate-y-0.5 transition-transform" />
-          </a>
-        </section>
 
         {/* Info card */}
         <section className="bg-card/60 border border-border rounded-2xl p-6 mb-10 flex gap-4 items-start">
@@ -206,7 +141,7 @@ function ThankYou() {
 
         {/* Selos */}
         <div className="flex justify-center opacity-70">
-          <img src={garantiasAsset.url} alt="Compra segura, satisfação garantida, privacidade protegida" className="max-w-sm w-full" />
+          <img src={garantiasAsset.url} alt="Compra segura, satisfação garantida, privacidade protegida" className="max-w-[120px] w-full" />
         </div>
       </main>
 
