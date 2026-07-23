@@ -77,14 +77,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Obrigado pela compra — Dramabox Ilimitado" },
+      { name: "description", content: "Sua compra foi confirmada! Siga o passo a passo para instalar o Dramabox Ilimitado e começar a assistir agora mesmo." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Obrigado pela compra — Dramabox Ilimitado" },
+      { property: "og:description", content: "Sua compra foi confirmada! Siga o passo a passo para instalar o Dramabox Ilimitado e começar a assistir agora mesmo." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Obrigado pela compra — Dramabox Ilimitado" },
+      { name: "twitter:description", content: "Sua compra foi confirmada! Siga o passo a passo para instalar o Dramabox Ilimitado e começar a assistir agora mesmo." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/tS2NCYCPYWfTIYWOBk6szRZnrlf2/social-images/social-1784786054226-739965724_122134596831187489_8780483352778395837_n.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/tS2NCYCPYWfTIYWOBk6szRZnrlf2/social-images/social-1784786054226-739965724_122134596831187489_8780483352778395837_n.webp" },
     ],
     links: [
       {
