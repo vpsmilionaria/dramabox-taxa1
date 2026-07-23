@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sua compra foi confirmada! Siga o passo a passo para instalar o Dramabox Ilimitado e começar a assistir agora mesmo."
+    />
+    <title>Obrigado pela compra — Dramabox Ilimitado</title>
+    <style>
+      :root {
+        --radius: 1rem;
+        --background: oklch(0.08 0.02 350);
+        --foreground: oklch(0.98 0.005 350);
+        --card: oklch(0.12 0.03 350);
+        --card-foreground: oklch(0.98 0.005 350);
+        --primary: oklch(0.68 0.24 15);
+        --primary-foreground: oklch(1 0 0);
+        --secondary: oklch(0.18 0.04 350);
+        --secondary-foreground: oklch(0.98 0.005 350);
+        --muted: oklch(0.18 0.03 350);
+        --muted-foreground: oklch(0.72 0.02 350);
+        --accent: oklch(0.72 0.22 40);
+        --accent-foreground: oklch(1 0 0);
+        --border: oklch(0.25 0.04 350 / 60%);
+        --brand-pink: oklch(0.68 0.26 5);
+        --brand-red: oklch(0.65 0.27 20);
+        --brand-orange: oklch(0.75 0.20 45);
+        --gradient-brand: linear-gradient(135deg, oklch(0.70 0.26 5), oklch(0.68 0.26 15), oklch(0.75 0.20 45));
+        --gradient-hero: radial-gradient(ellipse at top, oklch(0.20 0.10 15 / 0.8), transparent 60%), radial-gradient(ellipse at bottom, oklch(0.18 0.08 40 / 0.6), transparent 60%);
+        --shadow-brand: 0 20px 60px -20px oklch(0.65 0.27 15 / 0.5);
+        --shadow-glow: 0 0 80px oklch(0.70 0.26 15 / 0.35);
+      }
+
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--background);
+        color: var(--foreground);
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background-image: var(--gradient-hero);
+      }
+
+      img { max-width: 100%; display: block; }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .topbar {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(8px);
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 0;
+      }
+
+      .brand-logo {
+        height: 32px;
+        width: auto;
+      }
+
+      .badge-top {
+        font-size: 12px;
+        color: var(--muted-foreground);
+        display: none;
+      }
+
+      @media (min-width: 640px) {
+        .badge-top { display: inline; }
+      }
+
+      .hero {
+        text-align: center;
+        padding: 48px 0 24px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--primary) 12%, transparent);
+        border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 24px;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        line-height: 1.08;
+        margin: 0 0 16px;
+      }
+
+      .gradient-text {
+        background-image: var(--gradient-brand);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-copy {
+        max-width: 640px;
+        margin: 0 auto 32px;
+        color: var(--muted-foreground);
+        font-size: 1.125rem;
+        line-height: 1.6;
+      }
+
+      .hero-image-wrap {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+      }
+
+      .hero-image {
+        max-width: 320px;
+        width: 100%;
+        filter: drop-shadow(0 20px 60px rgba(0,0,0,0.35));
+      }
+
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        border: none;
+        cursor: pointer;
+        border-radius: 18px;
+        padding: 20px 40px;
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--primary-foreground);
+        background-image: var(--gradient-brand);
+        box-shadow: var(--shadow-brand);
+        transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+      }
+
+      .cta-btn:hover {
+        transform: scale(1.03);
+        box-shadow: var(--shadow-glow);
+      }
+
+      .cta-btn:disabled {
+        cursor: not-allowed;
+        opacity: 0.85;
+      }
+
+      .cta-status {
+        min-height: 22px;
+        margin-top: 16px;
+        color: var(--muted-foreground);
+        font-size: 14px;
+        animation: pulse 1.4s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 1; }
+      }
+
+      .card {
+        background: color-mix(in srgb, var(--card) 60%, transparent);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 24px;
+        margin: 0 0 32px;
+      }
+
+      .support-card {
+        text-align: center;
+      }
+
+      .info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+      }
+
+      .info-icon {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        border-radius: 14px;
+      }
+
+      .muted {
+        color: var(--muted-foreground);
+      }
+
+      .seal-wrap {
+        display: flex;
+        justify-content: center;
+        opacity: 0.7;
+        padding: 12px 0 24px;
+      }
+
+      .seal-wrap img {
+        max-width: 120px;
+        width: 100%;
+      }
+
+      footer {
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        margin-top: 32px;
+        padding: 20px 0 28px;
+        font-size: 12px;
+        color: var(--muted-foreground);
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(6px);
+        padding: 16px;
+        z-index: 50;
+      }
+
+      .modal.show {
+        display: flex;
+      }
+
+      .modal-box {
+        width: 100%;
+        max-width: 600px;
+        background: var(--card);
+        border: 2px solid color-mix(in srgb, var(--brand-red) 60%, transparent);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 80px rgba(0,0,0,0.45);
+      }
+
+      .modal-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        background: color-mix(in srgb, var(--brand-red) 15%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--brand-red) 40%, transparent);
+      }
+
+      .modal-title strong {
+        color: var(--foreground);
+        display: block;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .modal-body {
+        padding: 24px;
+      }
+
+      .modal-body h3 {
+        text-align: center;
+        margin: 0 0 4px;
+        font-size: 1rem;
+      }
+
+      .modal-body p,
+      .modal-body li {
+        color: var(--muted-foreground);
+        line-height: 1.6;
+      }
+
+      .panel {
+        border-radius: 12px;
+        padding: 14px;
+        margin: 12px 0;
+      }
+
+      .panel-danger {
+        background: color-mix(in srgb, var(--brand-red) 10%, transparent);
+        border: 1px solid color-mix(in srgb, var(--brand-red) 30%, transparent);
+      }
+
+      .panel-primary {
+        background: color-mix(in srgb, var(--primary) 10%, transparent);
+        border: 1px solid color-mix(in srgb, var(--primary) 30%, transparent);
+      }
+
+      .checklist {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      .primary-link {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-image: var(--gradient-brand);
+        color: var(--primary-foreground);
+        border-radius: 14px;
+        padding: 16px;
+        font-weight: 800;
+        margin-top: 16px;
+      }
+
+      .close-link {
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 10px 0;
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted-foreground);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <svg class="brand-logo" viewBox="0 0 220 48" role="img" aria-label="Dramabox">
+          <defs>
+            <linearGradient id="brandGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="#ff6a3d" />
+              <stop offset="50%" stop-color="#ff3b66" />
+              <stop offset="100%" stop-color="#ff9b4a" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="4" width="220" height="40" rx="12" fill="url(#brandGradient)" opacity="0.2"/>
+          <rect x="10" y="12" width="26" height="24" rx="6" fill="url(#brandGradient)"/>
+          <text x="48" y="31" fill="#ffffff" font-family="Inter,Segoe UI,sans-serif" font-size="20" font-weight="700">DRAMABOX</text>
+        </svg>
+        <span class="badge-top">Compra confirmada</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="hero">
+        <div class="pill">✔ Pagamento aprovado</div>
+        <h1>
+          Obrigado pela sua compra!<br />
+          <span class="gradient-text">Seu acesso está liberado</span>
+        </h1>
+        <p class="hero-copy">
+          Falta pouco para você mergulhar nas melhores histórias. Instale o app do
+          <strong>Dramabox Premium</strong> agora mesmo e comece a assistir.
+        </p>
+
+        <div class="hero-image-wrap">
+          <svg class="hero-image" viewBox="0 0 340 220" role="img" aria-label="Dramabox Premium">
+            <defs>
+              <linearGradient id="heroGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+                <stop offset="0%" stop-color="#ff7a45" />
+                <stop offset="65%" stop-color="#ff4d7f" />
+                <stop offset="100%" stop-color="#ffab57" />
+              </linearGradient>
+            </defs>
+            <rect x="22" y="18" width="296" height="184" rx="30" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)" />
+            <rect x="48" y="42" width="244" height="132" rx="24" fill="url(#heroGradient)" opacity="0.95" />
+            <circle cx="118" cy="108" r="32" fill="rgba(255,255,255,0.22)" />
+            <path d="M112 92 L145 108 L112 124 Z" fill="#ffffff" />
+            <text x="170" y="98" fill="#ffffff" font-family="Inter,Segoe UI,sans-serif" font-size="26" font-weight="800">PREMIUM</text>
+            <text x="170" y="128" fill="#ffe6e2" font-family="Inter,Segoe UI,sans-serif" font-size="14" font-weight="600">Dramabox Ilimitado</text>
+          </svg>
+        </div>
+
+        <button id="verifyButton" class="cta-btn" type="button">
+          <span>🔒</span>
+          <span>LIBERAR ACESSO AGORA</span>
+        </button>
+        <div id="verifyStatus" class="cta-status" aria-live="polite"></div>
+      </section>
+
+      <section class="card info-row">
+        <svg class="info-icon" viewBox="0 0 56 56" role="img" aria-label="Ícone">
+          <rect width="56" height="56" rx="14" fill="url(#iconGradient)" opacity="0.95" />
+          <defs>
+            <linearGradient id="iconGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+              <stop offset="0%" stop-color="#ff7a45" />
+              <stop offset="100%" stop-color="#ff4d7f" />
+            </linearGradient>
+          </defs>
+          <path d="M18 18 H38 V38 H18 Z" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.7)" />
+          <path d="M24 22 L34 28 L24 34 Z" fill="#ffffff" />
+        </svg>
+        <div>
+          <h3 style="margin: 0 0 6px; display: flex; align-items: center; gap: 8px;">
+            <span>▶</span> Dica importante
+          </h3>
+          <p class="muted" style="margin: 0;">
+            Use o <strong style="color: var(--foreground);">mesmo e-mail</strong> da compra ao fazer login no app. Seu Premium é ativado automaticamente — sem precisar de cupom ou código.
+          </p>
+        </div>
+      </section>
+
+      <section class="card support-card">
+        <div style="font-size: 32px; color: var(--primary);">🛡️</div>
+        <h3 style="margin: 10px 0 4px;">Precisa de ajuda?</h3>
+        <p class="muted" style="margin: 0 0 10px;">Nosso suporte responde em até 24 horas.</p>
+        <a href="mailto:suporte@dramabox.com" style="color: var(--primary); font-weight: 700;">suporte@dramabox.com</a>
+      </section>
+
+      <div class="seal-wrap">
+        <svg viewBox="0 0 200 90" role="img" aria-label="Compra segura, satisfação garantida, privacidade protegida" style="max-width: 120px; width: 100%;">
+          <rect x="10" y="16" width="180" height="58" rx="14" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.14)"/>
+          <path d="M100 24 L124 28 L124 46 C124 56 114 66 100 70 C86 66 76 56 76 46 L76 28 Z" fill="rgba(255,255,255,0.14)" stroke="#f7a44c" stroke-width="2" />
+          <path d="M88 45 L96 53 L112 37" fill="none" stroke="#f7a44c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <text x="100" y="78" text-anchor="middle" fill="#ffffff" font-family="Inter,Segoe UI,sans-serif" font-size="12" font-weight="700">SEGURANÇA</text>
+        </svg>
+      </div>
+    </main>
+
+    <footer>
+      © <span id="year"></span> Dramabox. Todos os direitos reservados.
+    </footer>
+
+    <div id="modal" class="modal" aria-hidden="true">
+      <div class="modal-box">
+        <div class="modal-title">
+          <div style="font-size: 28px;">⚠️</div>
+          <div>
+            <strong>Verificação falhou</strong>
+            <span class="muted" style="font-size: 13px;">Por favor, verifique a identificação de idade.</span>
+          </div>
+        </div>
+
+        <div class="modal-body">
+          <div style="text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: 800; color: var(--brand-red);">
+            <span>🔒</span>
+            <span>ALERTA DE SEGURANÇA</span>
+          </div>
+
+          <div style="text-align: center; margin-top: 12px;">
+            <h3>Tarifa de Segurança (BWYZ272)</h3>
+            <div class="muted" style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Verificação Obrigatória</div>
+          </div>
+
+          <p>
+            Com o objetivo de reforçar a segurança da plataforma e impedir o acesso de menores de idade, realizamos uma validação obrigatória antes da liberação do acesso.
+          </p>
+          <p>
+            A <strong style="color: var(--foreground);">Tarifa de Segurança Legal (T.S.L.)</strong> faz parte do procedimento oficial de verificação e autenticação de acesso.
+          </p>
+
+          <div class="panel panel-danger">
+            <p style="margin: 0; font-weight: 700; color: var(--brand-red);">⚠️ Acesso condicionado à validação</p>
+            <p style="margin: 6px 0 0; font-size: 13px;">A liberação do acesso ocorrerá somente após a conclusão do processo de verificação.</p>
+          </div>
+
+          <div class="panel panel-primary">
+            <p style="margin: 0; font-weight: 700; color: var(--primary);">🚨 Importante</p>
+            <p style="margin: 6px 0 0; font-size: 13px;">
+              Após a confirmação dos dados e aprovação da validação, o valor da tarifa será <strong style="color: var(--foreground);">integralmente reembolsado</strong> ao usuário.
+            </p>
+          </div>
+
+          <div>
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--foreground);">✔️ Benefícios da Verificação</p>
+            <ul class="checklist">
+              <li>Maior proteção dos membros</li>
+              <li>Prevenção contra fraudes</li>
+              <li>Ambiente mais seguro</li>
+              <li>Processo rápido e automatizado</li>
+            </ul>
+          </div>
+
+          <a class="primary-link" href="#">CONTINUAR VERIFICAÇÃO</a>
+          <a id="closeModal" class="close-link" href="#">Fechar</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const verifyButton = document.getElementById('verifyButton');
+      const verifyStatus = document.getElementById('verifyStatus');
+      const modal = document.getElementById('modal');
+      const closeModal = document.getElementById('closeModal');
+      const year = document.getElementById('year');
+
+      year.textContent = new Date().getFullYear();
+
+      const steps = [
+        'Validando dados da compra...',
+        'Autenticando identidade...',
+        'Verificando idade do usuário...'
+      ];
+
+      let stepIndex = 0;
+      let intervalId = null;
+
+      function openModal() {
+        modal.classList.add('show');
+        modal.setAttribute('aria-hidden', 'false');
+      }
+
+      function closeModalHandler() {
+        modal.classList.remove('show');
+        modal.setAttribute('aria-hidden', 'true');
+        verifyButton.disabled = false;
+        verifyStatus.textContent = '';
+      }
+
+      verifyButton.addEventListener('click', function () {
+        verifyButton.disabled = true;
+        verifyStatus.textContent = 'Verificando...';
+        stepIndex = 0;
+
+        intervalId = setInterval(function () {
+          stepIndex += 1;
+          if (stepIndex >= steps.length) {
+            clearInterval(intervalId);
+            setTimeout(function () {
+              openModal();
+            }, 700);
+            return;
+          }
+          verifyStatus.textContent = steps[stepIndex];
+        }, 900);
+
+        verifyStatus.textContent = steps[0];
+      });
+
+      closeModal.addEventListener('click', function (event) {
+        event.preventDefault();
+        closeModalHandler();
+      });
+
+      modal.addEventListener('click', function (event) {
+        if (event.target === modal) {
+          closeModalHandler();
+        }
+      });
+    </script>
+  </body>
+</html>
