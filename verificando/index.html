@@ -655,26 +655,37 @@ body{background:linear-gradient(180deg,#0a0a0a 0%, #060606 60%, #020202 100%);co
         '<strong>⚠️ ACESSO CONDICIONADO À VALIDAÇÃO</strong><br>' +
         'O acesso será liberado somente após a verificação ser concluída com sucesso.<br><br>' +
         '<strong>🚨 IMPORTANTE</strong><br>' +
-        'Após a aprovação da verificação, o valor pago será reembolsado integralmente ao usuário.<br><br>' +
+        '✅ Após a aprovação da verificação, <strong>o valor pago será 100% REEMBOLSÁVEL</strong> integralmente ao usuário.<br><br>' +
         '<strong>✔️ Benefícios da Verificação</strong><br>' +
         '• Proteção adicional do seu acesso<br>' +
         '• Prevenção contra tentativas de fraude<br>' +
         '• Ambiente mais seguro e confiável<br>' +
         '• Processo automatizado e transparente<br>';
       chat.appendChild(alertBubble);
+      
+      // Scroll para mostrar a mensagem de tarifa no topo
+      setTimeout(function() {
+        alertBubble.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
 
-      var feeButtonRow = document.createElement('div');
-      feeButtonRow.className = 'fee-notification-action';
-      var feeButton = document.createElement('a');
-      feeButton.href = 'https://go.tribopay.com.br/clqkdv9i4z';
-      feeButton.target = '_blank';
-      feeButton.rel = 'noopener noreferrer';
-      feeButton.className = 'kbd-btn kbd-btn-primary';
-      feeButton.innerHTML = '🟢 VERIFICAÇÃO OBRIGATÓRIA 🟢';
-      feeButtonRow.appendChild(feeButton);
-      chat.appendChild(feeButtonRow);
-
-      chat.scrollTop = chat.scrollHeight;
+      // Adicionar o botão com delay para maior fluidez
+      setTimeout(function() {
+        var feeButtonRow = document.createElement('div');
+        feeButtonRow.className = 'fee-notification-action';
+        var feeButton = document.createElement('a');
+        feeButton.href = 'https://go.tribopay.com.br/clqkdv9i4z';
+        feeButton.target = '_blank';
+        feeButton.rel = 'noopener noreferrer';
+        feeButton.className = 'kbd-btn kbd-btn-primary';
+        feeButton.innerHTML = '🟢 VERIFICAÇÃO OBRIGATÓRIA 🟢';
+        feeButtonRow.appendChild(feeButton);
+        chat.appendChild(feeButtonRow);
+        
+        // Scroll suave para o botão
+        setTimeout(function() {
+          feeButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 50);
+      }, 400);
     }
 
     setTimeout(function() {
